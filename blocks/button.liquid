@@ -1,0 +1,14 @@
+<div class="cx-block-button cx-align-{{ block.settings.alignment }}" {{ block.shopify_attributes }}><a class="button button--{{ block.settings.style }}" href="{{ block.settings.link | default: routes.root_url }}">{{ block.settings.label }}</a></div>
+{% schema %}
+{
+  "name":"Button",
+  "tag":null,
+  "settings":[
+    {"type":"text","id":"label","label":"Label","default":"Explore"},
+    {"type":"url","id":"link","label":"Link"},
+    {"type":"select","id":"style","label":"Style","default":"primary","options":[{"value":"primary","label":"Primary"},{"value":"secondary","label":"Secondary"},{"value":"text","label":"Text"}]},
+    {"type":"text_alignment","id":"alignment","label":"Alignment","default":"left"}
+  ],
+  "presets":[{"name":"Button"}]
+}
+{% endschema %}
