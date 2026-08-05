@@ -1,0 +1,20 @@
+{%- for scheme in settings.color_schemes -%}
+  .color-{{ scheme.id }} {
+    --cx-bg-solid: {{ scheme.settings.background }};
+    --cx-bg: {{ scheme.settings.background_gradient | default: scheme.settings.background }};
+    --cx-surface-solid: {{ scheme.settings.background }};
+    --cx-surface: color-mix(in srgb, {{ scheme.settings.background }} 94%, {{ scheme.settings.text }});
+    --cx-text: {{ scheme.settings.text }};
+    --cx-muted: color-mix(in srgb, {{ scheme.settings.text }} 66%, {{ scheme.settings.background }});
+    --cx-accent: {{ scheme.settings.button }};
+    --cx-accent-contrast: {{ scheme.settings.button_label }};
+    --cx-border: color-mix(in srgb, {{ scheme.settings.text }} 18%, {{ scheme.settings.background }});
+    --cx-button: {{ scheme.settings.button }};
+    --cx-button-text: {{ scheme.settings.button_label }};
+    --cx-secondary-button-text: {{ scheme.settings.secondary_button_label }};
+    --cx-shadow-color: {{ scheme.settings.shadow }};
+    --cx-success: #137a4b;
+    --cx-error: #b42318;
+    --cx-shadow: 0 16px 50px color-mix(in srgb, {{ scheme.settings.shadow }} 14%, transparent);
+  }
+{%- endfor -%}

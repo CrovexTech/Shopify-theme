@@ -1,0 +1,17 @@
+{%- comment -%}
+  Parameters: image, widths, sizes, class, loading, alt
+{%- endcomment -%}
+{%- if image != blank -%}
+  {%- assign image_alt = alt | default: image.alt | escape -%}
+  {{ image
+    | image_url: width: 2400
+    | image_tag:
+      widths: widths,
+      sizes: sizes,
+      class: class,
+      loading: loading,
+      alt: image_alt
+  }}
+{%- else -%}
+  <div class="media-placeholder {{ class }}" aria-hidden="true">{{ 'image' | placeholder_svg_tag }}</div>
+{%- endif -%}
