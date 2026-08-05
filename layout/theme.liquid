@@ -1,0 +1,117 @@
+{% comment %}
+  Crovex Commerce Framework — Copyright © 2026 James Boyden.
+  Use is governed by the applicable written license. Ownership is not transferred by installation or access.
+{% endcomment %}
+{%- assign default_scheme = settings.default_color_scheme -%}
+<!doctype html>
+<html class="no-js" lang="{{ request.locale.iso_code }}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="{{ default_scheme.settings.background | default: '#FFFFFF' }}">
+    <link rel="canonical" href="{{ canonical_url }}">
+
+    {%- if settings.favicon != blank -%}
+      <link rel="icon" href="{{ settings.favicon | image_url: width: 32, height: 32 }}" type="image/png">
+    {%- endif -%}
+
+    <title>
+      {{ page_title }}
+      {%- if current_tags %} — {{ current_tags | join: ', ' }}{% endif -%}
+      {%- if current_page != 1 %} — {{ 'general.pagination.page' | t: number: current_page }}{% endif -%}
+      {%- unless page_title contains shop.name %} — {{ shop.name }}{% endunless -%}
+    </title>
+
+    {%- if page_description -%}
+      <meta name="description" content="{{ page_description | escape }}">
+    {%- endif -%}
+
+    {% render 'seo-meta' %}
+    {{ content_for_header }}
+
+    {%- liquid
+      assign body_bold = settings.font_body | font_modify: 'weight', 'bold'
+      assign body_italic = settings.font_body | font_modify: 'style', 'italic'
+    -%}
+
+    {% style %}
+      {{ settings.font_body | font_face: font_display: 'swap' }}
+      {{ body_bold | font_face: font_display: 'swap' }}
+      {{ body_italic | font_face: font_display: 'swap' }}
+      {{ settings.font_heading | font_face: font_display: 'swap' }}
+
+      :root {
+        --cx-page-width: {{ settings.page_width }}px;
+        --cx-section-space: {{ settings.section_spacing }}px;
+        --cx-radius-sm: {{ settings.radius_small }}px;
+        --cx-radius-lg: {{ settings.radius_large }}px;
+        --cx-font-body: {{ settings.font_body.family }}, {{ settings.font_body.fallback_families }};
+        --cx-font-heading: {{ settings.font_heading.family }}, {{ settings.font_heading.fallback_families }};
+        --cx-font-body-weight: {{ settings.font_body.weight }};
+        --cx-font-heading-weight: {{ settings.font_heading.weight }};
+      }
+
+      {% render 'color-scheme-styles' %}
+    {% endstyle %}
+
+    {{ 'crovex.css' | asset_url | stylesheet_tag }}
+    <script>
+      document.documentElement.classList.remove('no-js');
+      window.CrovexTheme = {
+        routes: {
+          cart: {{ routes.cart_url | json }},
+          cartAdd: {{ routes.cart_add_url | json }},
+          cartChange: {{ routes.cart_change_url | json }},
+          search: {{ routes.search_url | json }},
+          predictiveSearch: {{ routes.predictive_search_url | json }},
+          allProducts: {{ routes.all_products_collection_url | json }}
+        },
+        moneyFormat: {{ shop.money_format | strip_html | json }},
+        strings: {
+          addToCart: {{ 'products.product.add_to_cart' | t | json }},
+          soldOut: {{ 'products.product.sold_out' | t | json }},
+          unavailable: {{ 'products.product.unavailable' | t | json }},
+          cartError: {{ 'cart.general.error' | t | json }},
+          emptyCart: {{ 'cart.general.empty' | t | json }},
+          continueShopping: {{ 'cart.general.continue_shopping' | t | json }},
+          decreaseQuantity: {{ 'products.product.decrease_quantity' | t | json }},
+          increaseQuantity: {{ 'products.product.increase_quantity' | t | json }}
+        }
+      };
+    </script>
+    <script src="{{ 'crovex.js' | asset_url }}" defer></script>
+  </head>
+
+  <body class="template-{{ template.name | handle }} cx-color-scheme color-{{ settings.default_color_scheme }}{% if settings.enable_reveal %} has-reveal{% endif %}" data-cart-behavior="{{ settings.cart_behavior }}">
+    <a class="skip-link" href="#MainContent">{{ 'accessibility.skip_to_content' | t }}</a>
+
+    {% sections 'header-group' %}
+
+    <main id="MainContent" class="site-main" role="main" tabindex="-1">
+      {{ content_for_layout }}
+    </main>
+
+    {% sections 'footer-group' %}
+
+    <cart-drawer class="cart-drawer" data-state="closed" aria-hidden="true">
+      <div class="cart-drawer__backdrop" data-cart-close></div>
+      <aside class="cart-drawer__panel" role="dialog" aria-modal="true" aria-labelledby="CartDrawerTitle">
+        <div class="cart-drawer__header">
+          <h2 id="CartDrawerTitle">{{ 'cart.general.title' | t }}</h2>
+          <button class="icon-button" type="button" data-cart-close aria-label="{{ 'accessibility.close' | t }}">
+            {% render 'icon', name: 'close' %}
+          </button>
+        </div>
+        <div class="cart-drawer__body" data-cart-items aria-live="polite"></div>
+        <div class="cart-drawer__footer" data-cart-footer hidden>
+          <div class="cart-drawer__subtotal">
+            <span>{{ 'cart.general.subtotal' | t }}</span>
+            <strong data-cart-subtotal></strong>
+          </div>
+          <p class="cart-drawer__note">{{ 'cart.general.taxes_shipping' | t }}</p>
+          <a class="button button--primary button--full" href="{{ routes.cart_url }}">{{ 'cart.general.checkout' | t }}</a>
+        </div>
+      </aside>
+    </cart-drawer>
+  </body>
+</html>
