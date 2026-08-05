@@ -1,0 +1,12 @@
+<div class="cx-block-text cx-align-{{ block.settings.alignment }} rte" {{ block.shopify_attributes }}>{{ block.settings.text }}</div>
+{% schema %}
+{
+  "name":"Text",
+  "tag":null,
+  "settings":[
+    {"type":"richtext","id":"text","label":"Text","default":"<p>Add flexible content that can be reused across composable sections.</p>"},
+    {"type":"text_alignment","id":"alignment","label":"Alignment","default":"left"}
+  ],
+  "presets":[{"name":"Text"}]
+}
+{% endschema %}

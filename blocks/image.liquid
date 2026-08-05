@@ -1,0 +1,13 @@
+<div class="cx-block-image cx-align-{{ block.settings.alignment }}" {{ block.shopify_attributes }}>{% if block.settings.image != blank %}{{ block.settings.image | image_url: width: 1800 | image_tag: widths: '480, 720, 1080, 1440, 1800', sizes: '100vw', loading: 'lazy', alt: block.settings.alt }}{% else %}{{ 'image' | placeholder_svg_tag }}{% endif %}</div>
+{% schema %}
+{
+  "name":"Image",
+  "tag":null,
+  "settings":[
+    {"type":"image_picker","id":"image","label":"Image"},
+    {"type":"text","id":"alt","label":"Alternative text"},
+    {"type":"text_alignment","id":"alignment","label":"Alignment","default":"center"}
+  ],
+  "presets":[{"name":"Image"}]
+}
+{% endschema %}

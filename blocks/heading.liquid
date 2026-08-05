@@ -1,0 +1,14 @@
+<{{ block.settings.tag }} class="cx-block-heading cx-block-heading--{{ block.settings.size }} cx-align-{{ block.settings.alignment }}" {{ block.shopify_attributes }}>{{ block.settings.text }}</{{ block.settings.tag }}>
+{% schema %}
+{
+  "name":"Heading",
+  "tag":null,
+  "settings":[
+    {"type":"inline_richtext","id":"text","label":"Heading","default":"Build the next chapter."},
+    {"type":"select","id":"tag","label":"HTML tag","default":"h2","options":[{"value":"h1","label":"H1"},{"value":"h2","label":"H2"},{"value":"h3","label":"H3"}]},
+    {"type":"select","id":"size","label":"Size","default":"large","options":[{"value":"small","label":"Small"},{"value":"medium","label":"Medium"},{"value":"large","label":"Large"}]},
+    {"type":"text_alignment","id":"alignment","label":"Alignment","default":"left"}
+  ],
+  "presets":[{"name":"Heading"}]
+}
+{% endschema %}
