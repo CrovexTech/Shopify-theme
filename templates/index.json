@@ -1,0 +1,97 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero",
+      "settings": {
+        "color_scheme": "scheme-1"
+      }
+    },
+    "featured": {
+      "type": "featured-collection",
+      "settings": {
+        "color_scheme": "scheme-1"
+      }
+    },
+    "rich": {
+      "type": "rich-text",
+      "blocks": {
+        "eyebrow": {
+          "type": "eyebrow",
+          "settings": {}
+        },
+        "heading": {
+          "type": "heading",
+          "settings": {}
+        },
+        "text": {
+          "type": "text",
+          "settings": {}
+        },
+        "button": {
+          "type": "button",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "eyebrow",
+        "heading",
+        "text",
+        "button"
+      ],
+      "settings": {
+        "color_scheme": "scheme-3"
+      }
+    },
+    "image_text": {
+      "type": "image-with-text",
+      "settings": {
+        "color_scheme": "scheme-1"
+      }
+    },
+    "features": {
+      "type": "multicolumn",
+      "blocks": {
+        "one": {
+          "type": "column",
+          "settings": {
+            "heading": "Modular by default"
+          }
+        },
+        "two": {
+          "type": "column",
+          "settings": {
+            "heading": "Performance conscious"
+          }
+        },
+        "three": {
+          "type": "column",
+          "settings": {
+            "heading": "Ready to extend"
+          }
+        }
+      },
+      "block_order": [
+        "one",
+        "two",
+        "three"
+      ],
+      "settings": {
+        "color_scheme": "scheme-5"
+      }
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "settings": {
+        "color_scheme": "scheme-2"
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "featured",
+    "rich",
+    "image_text",
+    "features",
+    "newsletter"
+  ]
+}
