@@ -1,0 +1,14 @@
+<section class="section cx-color-scheme color-{{ section.settings.color_scheme }}"><div class="page-width"><header class="page-header"><h1>{{ 'collections.general.all_collections' | t }}</h1></header><div class="collection-grid">{%- for collection in collections -%}<article class="collection-card"><a href="{{ collection.url }}">{% render 'responsive-image', image: collection.image | default: collection.products.first.featured_image, widths: '400, 600, 900', sizes: '(min-width: 900px) 33vw, 100vw', class: 'collection-card__image', loading: 'lazy', alt: collection.title %}<h2>{{ collection.title }}</h2></a></article>{%- endfor -%}</div></div></section>
+{% schema %}
+{
+  "name": "Collection list",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color palette",
+      "default": "scheme-1"
+    }
+  ]
+}
+{% endschema %}

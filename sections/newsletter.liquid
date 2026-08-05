@@ -1,0 +1,55 @@
+<section class="section newsletter-section cx-color-scheme color-{{ section.settings.color_scheme }}" data-reveal>
+  <div class="page-width newsletter-section__inner">
+    <div><p class="eyebrow">{{ section.settings.eyebrow }}</p><h2>{{ section.settings.heading }}</h2><div class="rte">{{ section.settings.text }}</div></div>
+    {%- form 'customer', class: 'newsletter-form newsletter-form--large' -%}
+      <input type="hidden" name="contact[tags]" value="newsletter">
+      <label class="visually-hidden" for="NewsletterEmail-{{ section.id }}">{{ 'newsletter.label' | t }}</label>
+      <input id="NewsletterEmail-{{ section.id }}" type="email" name="contact[email]" value="{{ form.email }}" placeholder="{{ 'newsletter.placeholder' | t }}" required autocomplete="email">
+      <button class="button button--primary" type="submit">{{ section.settings.button_label }}</button>
+      {%- if form.posted_successfully? -%}<p class="form-status form-status--success">{{ 'newsletter.success' | t }}</p>{%- endif -%}
+      {%- if form.errors -%}<div class="form-status form-status--error">{{ form.errors | default_errors }}</div>{%- endif -%}
+    {%- endform -%}
+  </div>
+</section>
+{% schema %}
+{
+  "name": "Newsletter",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color palette",
+      "default": "scheme-2"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Private access"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Join the list"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Text",
+      "default": "<p>Get new releases, brand stories, and limited offers.</p>"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Subscribe"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Newsletter"
+    }
+  ]
+}
+{% endschema %}

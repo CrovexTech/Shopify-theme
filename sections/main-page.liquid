@@ -1,0 +1,14 @@
+<section class="section cx-color-scheme color-{{ section.settings.color_scheme }}"><div class="page-width page-width--narrow"><h1>{{ page.title }}</h1><div class="rte">{{ page.content }}</div></div></section>
+{% schema %}
+{
+  "name": "Main page",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color palette",
+      "default": "scheme-1"
+    }
+  ]
+}
+{% endschema %}

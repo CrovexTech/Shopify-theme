@@ -1,0 +1,40 @@
+<section class="section cart-page cx-color-scheme color-{{ section.settings.color_scheme }}">
+  <div class="page-width page-width--narrow">
+    <h1>{{ 'cart.general.title' | t }}</h1>
+    {%- if cart.item_count == 0 -%}
+      <div class="empty-state"><p>{{ 'cart.general.empty' | t }}</p><a class="button button--primary" href="{{ routes.all_products_collection_url }}">{{ 'cart.general.continue_shopping' | t }}</a></div>
+    {%- else -%}
+      <form action="{{ routes.cart_url }}" method="post" novalidate>
+        <div class="cart-lines">
+          {%- for item in cart.items -%}
+            <article class="cart-line">
+              <a class="cart-line__image" href="{{ item.url }}">{% render 'responsive-image', image: item.image, widths: '160, 240, 320', sizes: '120px', class: '', loading: 'lazy', alt: item.product.title %}</a>
+              <div class="cart-line__content"><a href="{{ item.url }}"><strong>{{ item.product.title }}</strong></a>{%- unless item.product.has_only_default_variant -%}<p>{{ item.variant.title }}</p>{%- endunless -%}<p>{{ item.final_price | money }}</p><a class="text-link" href="{{ item.url_to_remove }}">{{ 'cart.general.remove' | t }}</a></div>
+              <div class="cart-line__quantity"><label for="Updates_{{ item.key }}">{{ 'products.product.quantity' | t }}</label><input id="Updates_{{ item.key }}" name="updates[]" type="number" value="{{ item.quantity }}" min="0"></div>
+              <strong>{{ item.final_line_price | money }}</strong>
+            </article>
+          {%- endfor -%}
+        </div>
+        <div class="cart-summary">
+          <label for="CartNote">{{ 'cart.general.note' | t }}</label><textarea id="CartNote" name="note">{{ cart.note }}</textarea>
+          <div class="cart-summary__total"><span>{{ 'cart.general.subtotal' | t }}</span><strong>{{ cart.total_price | money }}</strong></div>
+          <p>{{ 'cart.general.taxes_shipping' | t }}</p>
+          <div class="cart-summary__actions"><button class="button button--secondary" type="submit" name="update">{{ 'cart.general.update' | t }}</button><button class="button button--primary" type="submit" name="checkout">{{ 'cart.general.checkout' | t }}</button></div>
+        </div>
+      </form>
+    {%- endif -%}
+  </div>
+</section>
+{% schema %}
+{
+  "name": "Main cart",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color palette",
+      "default": "scheme-1"
+    }
+  ]
+}
+{% endschema %}

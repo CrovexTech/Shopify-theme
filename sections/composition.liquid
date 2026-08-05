@@ -1,0 +1,55 @@
+<section class="section composition cx-color-scheme color-{{ section.settings.color_scheme }}"{% if section.settings.background_override != blank %} style="--composition-bg:{{ section.settings.background_override }};--composition-max:{% else %} style="--composition-max:{% endif %}{{ section.settings.max_width }}px;--composition-gap:{{ section.settings.gap }}px;">
+  <div class="page-width composition__inner">{% content_for 'blocks' %}</div>
+</section>
+{% schema %}
+{
+  "name": "Composition",
+  "blocks": [
+    {
+      "type": "@theme"
+    },
+    {
+      "type": "@app"
+    }
+  ],
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color palette",
+      "default": "scheme-1"
+    },
+    {
+      "type": "color_background",
+      "id": "background_override",
+      "label": "Custom background override",
+      "info": "Leave blank to use the selected color palette."
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "min": 480,
+      "max": 1400,
+      "step": 40,
+      "unit": "px",
+      "label": "Content width",
+      "default": 920
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "min": 0,
+      "max": 64,
+      "step": 4,
+      "unit": "px",
+      "label": "Block spacing",
+      "default": 20
+    }
+  ],
+  "presets": [
+    {
+      "name": "Composition"
+    }
+  ]
+}
+{% endschema %}

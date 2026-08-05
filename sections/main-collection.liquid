@@ -1,0 +1,117 @@
+<section class="section collection-page cx-color-scheme color-{{ section.settings.color_scheme }}">
+  <div class="page-width">
+    <header class="collection-header">
+      <div><p class="eyebrow">{{ 'collections.general.collection' | t }}</p><h1>{{ collection.title }}</h1>{%- if collection.description != blank -%}<div class="rte">{{ collection.description }}</div>{%- endif -%}</div>
+      {%- if collection.image and section.settings.show_collection_image -%}{% render 'responsive-image', image: collection.image, widths: '600, 900, 1200', sizes: '(min-width: 900px) 40vw, 100vw', class: 'collection-header__image', loading: 'eager', alt: collection.title %}{%- endif -%}
+    </header>
+
+    <div class="collection-toolbar">
+      {%- if section.settings.enable_filtering and collection.filters != empty -%}<button class="button button--secondary" type="button" data-filters-toggle>{{ 'collections.filters.filter' | t }}</button>{%- endif -%}
+      {%- if section.settings.enable_sorting -%}
+        <form class="sort-form" method="get">
+          <label for="SortBy">{{ 'collections.sorting.label' | t }}</label>
+          <select id="SortBy" name="sort_by" data-sort-select>
+            {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
+            {%- for option in collection.sort_options -%}<option value="{{ option.value }}"{% if option.value == sort_by %} selected{% endif %}>{{ option.name }}</option>{%- endfor -%}
+          </select>
+        </form>
+      {%- endif -%}
+    </div>
+
+    <div class="collection-layout{% unless section.settings.enable_filtering %} collection-layout--full{% endunless %}">
+      {%- if section.settings.enable_filtering and collection.filters != empty -%}
+        <aside class="facets" data-facets>
+          <form id="CollectionFiltersForm" method="get">
+            {%- for filter in collection.filters -%}
+              <details class="facet" open>
+                <summary>{{ filter.label }} <span>{{ filter.active_values.size }}</span></summary>
+                <div class="facet__body">
+                  {%- case filter.type -%}
+                    {%- when 'boolean', 'list' -%}
+                      {%- for value in filter.values -%}
+                        <label class="facet-option">
+                          <input type="checkbox" name="{{ value.param_name }}" value="{{ value.value }}"{% if value.active %} checked{% endif %}{% if value.count == 0 and value.active == false %} disabled{% endif %}>
+                          <span>{{ value.label }} ({{ value.count }})</span>
+                        </label>
+                      {%- endfor -%}
+                    {%- when 'price_range' -%}
+                      <div class="price-range">
+                        <label>{{ 'collections.filters.from' | t }}<input name="{{ filter.min_value.param_name }}" type="number" min="0" max="{{ filter.range_max | money_without_currency | replace: ',', '' }}" value="{{ filter.min_value.value | money_without_currency | replace: ',', '' }}"></label>
+                        <label>{{ 'collections.filters.to' | t }}<input name="{{ filter.max_value.param_name }}" type="number" min="0" max="{{ filter.range_max | money_without_currency | replace: ',', '' }}" value="{{ filter.max_value.value | money_without_currency | replace: ',', '' }}"></label>
+                      </div>
+                  {%- endcase -%}
+                </div>
+              </details>
+            {%- endfor -%}
+            <div class="facets__actions"><button class="button button--primary" type="submit">{{ 'collections.filters.apply' | t }}</button><a class="text-link" href="{{ collection.url }}">{{ 'collections.filters.clear' | t }}</a></div>
+          </form>
+        </aside>
+      {%- endif -%}
+
+      <div class="collection-products">
+        {%- paginate collection.products by section.settings.products_per_page -%}
+          <p class="collection-count">{{ 'collections.general.product_count' | t: count: collection.products_count }}</p>
+          <div class="product-grid product-grid--{{ section.settings.columns_desktop }}">
+            {%- for product in collection.products -%}{% render 'product-card', product: product, show_vendor: section.settings.show_vendor %}{%- else -%}<p>{{ 'collections.general.no_products' | t }}</p>{%- endfor -%}
+          </div>
+          {% render 'pagination', paginate: paginate %}
+        {%- endpaginate -%}
+      </div>
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "Main collection",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color palette",
+      "default": "scheme-1"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_collection_image",
+      "label": "Show collection image",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_filtering",
+      "label": "Enable filtering",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sorting",
+      "label": "Enable sorting",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "label": "Show vendor",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "min": 8,
+      "max": 40,
+      "step": 4,
+      "label": "Products per page",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "label": "Desktop columns",
+      "default": 4
+    }
+  ]
+}
+{% endschema %}

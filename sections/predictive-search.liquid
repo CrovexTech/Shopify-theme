@@ -1,0 +1,27 @@
+{%- if predictive_search.performed -%}
+  <div class="predictive-results">
+    {%- if predictive_search.resources.products.size > 0 -%}
+      <h2 class="predictive-results__heading">{{ 'general.search.products' | t }}</h2>
+      <ul role="listbox">
+        {%- for product in predictive_search.resources.products limit: 6 -%}
+          <li role="option">
+            <a class="predictive-item" href="{{ product.url }}">
+              {%- if product.featured_image -%}{{ product.featured_image | image_url: width: 140 | image_tag: widths: '70, 105, 140', loading: 'lazy', alt: product.title }}{%- endif -%}
+              <span><strong>{{ product.title }}</strong><small>{{ product.price | money }}</small></span>
+            </a>
+          </li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+    {%- if predictive_search.resources.collections.size > 0 -%}
+      <h2 class="predictive-results__heading">{{ 'general.search.collections' | t }}</h2>
+      <ul role="listbox">{%- for collection in predictive_search.resources.collections limit: 4 -%}<li role="option"><a class="predictive-link" href="{{ collection.url }}">{{ collection.title }}</a></li>{%- endfor -%}</ul>
+    {%- endif -%}
+    {%- if predictive_search.resources.pages.size > 0 -%}
+      <h2 class="predictive-results__heading">{{ 'general.search.pages' | t }}</h2>
+      <ul role="listbox">{%- for page in predictive_search.resources.pages limit: 4 -%}<li role="option"><a class="predictive-link" href="{{ page.url }}">{{ page.title }}</a></li>{%- endfor -%}</ul>
+    {%- endif -%}
+    <a class="predictive-search__all" href="{{ routes.search_url }}?q={{ predictive_search.terms | url_encode }}">{{ 'general.search.view_all' | t: terms: predictive_search.terms }}</a>
+  </div>
+{%- endif -%}
+{% schema %}{"name":"Predictive search","settings":[]}{% endschema %}

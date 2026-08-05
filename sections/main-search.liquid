@@ -1,0 +1,14 @@
+<section class="section search-page cx-color-scheme color-{{ section.settings.color_scheme }}"><div class="page-width"><header class="page-header"><p class="eyebrow">{{ 'general.search.label' | t }}</p><h1>{% if search.performed %}{{ 'general.search.results_for' | t: terms: search.terms }}{% else %}{{ 'general.search.title' | t }}{% endif %}</h1><form class="search-page__form" action="{{ routes.search_url }}" method="get" role="search"><input type="search" name="q" value="{{ search.terms | escape }}" placeholder="{{ 'general.search.placeholder' | t }}"><button class="button button--primary" type="submit">{{ 'general.search.submit' | t }}</button></form></header>{%- if search.performed -%}{%- paginate search.results by 24 -%}<div class="search-results">{%- for item in search.results -%}{%- case item.object_type -%}{%- when 'product' -%}{% render 'product-card', product: item, show_vendor: false %}{%- else -%}<article class="search-result"><p class="eyebrow">{{ item.object_type }}</p><h2><a href="{{ item.url }}">{{ item.title }}</a></h2><p>{{ item.content | strip_html | truncate: 180 }}</p></article>{%- endcase -%}{%- else -%}<p>{{ 'general.search.no_results' | t }}</p>{%- endfor -%}</div>{% render 'pagination', paginate: paginate %}{%- endpaginate -%}{%- endif -%}</div></section>
+{% schema %}
+{
+  "name": "Main search",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color palette",
+      "default": "scheme-1"
+    }
+  ]
+}
+{% endschema %}

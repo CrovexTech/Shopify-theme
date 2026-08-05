@@ -1,0 +1,14 @@
+<section class="section cx-color-scheme color-{{ section.settings.color_scheme }}"><div class="page-width page-width--narrow empty-state"><p class="eyebrow">404</p><h1>{{ 'general.404.title' | t }}</h1><p>{{ 'general.404.subtext' | t }}</p><a class="button button--primary" href="{{ routes.root_url }}">{{ 'general.404.button' | t }}</a></div></section>
+{% schema %}
+{
+  "name": "404",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color palette",
+      "default": "scheme-1"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,14 @@
+<article class="section article-page cx-color-scheme color-{{ section.settings.color_scheme }}"><div class="page-width page-width--narrow"><header class="article-page__header"><p class="eyebrow">{{ article.published_at | date: '%b %d, %Y' }}</p><h1>{{ article.title }}</h1>{%- if article.author != blank -%}<p>{{ 'blogs.article.by_author' | t: author: article.author }}</p>{%- endif -%}</header>{%- if article.image -%}{% render 'responsive-image', image: article.image, widths: '720, 1080, 1440', sizes: '(min-width: 900px) 900px, 100vw', class: 'article-page__image', loading: 'eager', alt: article.title %}{%- endif -%}<div class="rte article-content">{{ article.content }}</div></div></article>
+{% schema %}
+{
+  "name": "Main article",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color palette",
+      "default": "scheme-1"
+    }
+  ]
+}
+{% endschema %}

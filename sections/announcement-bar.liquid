@@ -1,0 +1,210 @@
+{{ 'announcement-bar.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign animation = section.settings.animation
+  assign target = blank
+  assign rel = blank
+  if section.settings.open_in_new_tab
+    assign target = '_blank'
+    assign rel = 'noopener noreferrer'
+  endif
+  assign letter_spacing = section.settings.letter_spacing | divided_by: 100.0
+  assign transition_seconds = section.settings.transition_speed | divided_by: 1000.0
+-%}
+
+{%- if section.settings.text != blank or section.blocks.size > 0 -%}
+  <announcement-bar
+    class="announcement cx-color-scheme color-{{ section.settings.color_scheme }} announcement--{{ animation }} announcement--direction-{{ section.settings.direction }}{% if section.settings.pause_on_hover %} announcement--pause-hover{% endif %}{% if section.settings.shimmer_text %} announcement--shimmer{% endif %}{% if section.settings.animate_background %} announcement--animated-background{% endif %}"
+    data-animation="{{ animation }}"
+    data-interval="{{ section.settings.rotation_interval }}"
+    data-pause-hover="{{ section.settings.pause_on_hover }}"
+    data-mobile-animation="{{ section.settings.enable_mobile_animation }}"
+    role="region"
+    aria-label="Announcement"
+    style="
+      --announcement-height: {{ section.settings.height }}px;
+      --announcement-font-size: {{ section.settings.font_size }}px;
+      --announcement-font-weight: {{ section.settings.font_weight }};
+      --announcement-letter-spacing: {{ letter_spacing }}em;
+      --announcement-transform: {% if section.settings.uppercase %}uppercase{% else %}none{% endif %};
+      --announcement-duration: {{ section.settings.marquee_duration }}s;
+      --announcement-mobile-duration: {{ section.settings.mobile_marquee_duration }}s;
+      --announcement-gap: {{ section.settings.message_gap }}px;
+      --announcement-mobile-gap: {{ section.settings.mobile_message_gap }}px;
+      --announcement-transition: {{ transition_seconds }}s;
+      --announcement-gradient-duration: {{ section.settings.gradient_duration }}s;
+      {% if section.settings.use_custom_colors %}
+        --announcement-background: {{ section.settings.background }};
+        --announcement-text: {{ section.settings.text_color }};
+        --announcement-accent: {{ section.settings.accent_color }};
+      {% else %}
+        --announcement-background: var(--cx-bg);
+        --announcement-text: var(--cx-text);
+        --announcement-accent: var(--cx-accent);
+      {% endif %}
+    "
+    {{ section.shopify_attributes }}
+  >
+    <div class="announcement__viewport">
+      {%- if animation == 'marquee' -%}
+        <div class="announcement__track">
+          <div class="announcement__group">
+            {%- if section.settings.text != blank -%}
+              <div class="announcement__item is-active">
+                {%- if section.settings.link != blank -%}
+                  <a class="announcement__link" href="{{ section.settings.link }}"{% if target != blank %} target="{{ target }}" rel="{{ rel }}"{% endif %}>
+                    <span class="announcement__message-text">{{ section.settings.text | escape }}</span>
+                  </a>
+                {%- else -%}
+                  <span class="announcement__message"><span class="announcement__message-text">{{ section.settings.text | escape }}</span></span>
+                {%- endif -%}
+              </div>
+              {%- if section.settings.show_separator -%}<span class="announcement__separator" aria-hidden="true">{{ section.settings.separator | escape }}</span>{%- endif -%}
+            {%- endif -%}
+
+            {%- for block in section.blocks -%}
+              {%- if block.settings.text != blank -%}
+                <div class="announcement__item" data-announcement-block="{{ block.id }}" {{ block.shopify_attributes }}>
+                  {%- if block.settings.link != blank -%}
+                    <a class="announcement__link" href="{{ block.settings.link }}"{% if target != blank %} target="{{ target }}" rel="{{ rel }}"{% endif %}>
+                      <span class="announcement__message-text">{{ block.settings.text | escape }}</span>
+                    </a>
+                  {%- else -%}
+                    <span class="announcement__message"><span class="announcement__message-text">{{ block.settings.text | escape }}</span></span>
+                  {%- endif -%}
+                </div>
+                {%- if section.settings.show_separator -%}<span class="announcement__separator" aria-hidden="true">{{ section.settings.separator | escape }}</span>{%- endif -%}
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+
+          <div class="announcement__group" aria-hidden="true">
+            {%- if section.settings.text != blank -%}
+              <div class="announcement__item is-active">
+                <span class="announcement__message"><span class="announcement__message-text">{{ section.settings.text | escape }}</span></span>
+              </div>
+              {%- if section.settings.show_separator -%}<span class="announcement__separator">{{ section.settings.separator | escape }}</span>{%- endif -%}
+            {%- endif -%}
+            {%- for block in section.blocks -%}
+              {%- if block.settings.text != blank -%}
+                <div class="announcement__item">
+                  <span class="announcement__message"><span class="announcement__message-text">{{ block.settings.text | escape }}</span></span>
+                </div>
+                {%- if section.settings.show_separator -%}<span class="announcement__separator">{{ section.settings.separator | escape }}</span>{%- endif -%}
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        </div>
+      {%- else -%}
+        <div class="announcement__slides" aria-live="polite">
+          {%- assign active_assigned = false -%}
+          {%- if section.settings.text != blank -%}
+            <div class="announcement__item is-active">
+              <div class="announcement__content{% if section.settings.content_width == 'page' %} page-width{% endif %}">
+                {%- if section.settings.link != blank -%}
+                  <a class="announcement__link" href="{{ section.settings.link }}"{% if target != blank %} target="{{ target }}" rel="{{ rel }}"{% endif %}>
+                    <span class="announcement__message-text">{{ section.settings.text | escape }}</span>
+                  </a>
+                {%- else -%}
+                  <span class="announcement__message"><span class="announcement__message-text">{{ section.settings.text | escape }}</span></span>
+                {%- endif -%}
+              </div>
+            </div>
+            {%- assign active_assigned = true -%}
+          {%- endif -%}
+
+          {%- for block in section.blocks -%}
+            {%- if block.settings.text != blank -%}
+              <div class="announcement__item{% unless active_assigned %} is-active{% endunless %}" data-announcement-block="{{ block.id }}" {{ block.shopify_attributes }}>
+                <div class="announcement__content{% if section.settings.content_width == 'page' %} page-width{% endif %}">
+                  {%- if block.settings.link != blank -%}
+                    <a class="announcement__link" href="{{ block.settings.link }}"{% if target != blank %} target="{{ target }}" rel="{{ rel }}"{% endif %}>
+                      <span class="announcement__message-text">{{ block.settings.text | escape }}</span>
+                    </a>
+                  {%- else -%}
+                    <span class="announcement__message"><span class="announcement__message-text">{{ block.settings.text | escape }}</span></span>
+                  {%- endif -%}
+                </div>
+              </div>
+              {%- assign active_assigned = true -%}
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </announcement-bar>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Announcement bar",
+  "max_blocks": 4,
+  "settings": [
+    {"type":"header","content":"Primary message"},
+    {"type":"text","id":"text","label":"Text","default":"Free shipping on qualifying orders"},
+    {"type":"url","id":"link","label":"Link"},
+    {"type":"checkbox","id":"open_in_new_tab","label":"Open links in new tab","default":false},
+
+    {"type":"header","content":"Colors"},
+    {"type":"color_scheme","id":"color_scheme","label":"Saved palette","default":"scheme-2"},
+    {"type":"checkbox","id":"use_custom_colors","label":"Override palette colors","default":false},
+    {"type":"color_background","id":"background","label":"Background or gradient","default":"linear-gradient(90deg, #111110 0%, #2B2015 100%)"},
+    {"type":"color","id":"text_color","label":"Text","default":"#F7F1E8"},
+    {"type":"color","id":"accent_color","label":"Separator and shimmer","default":"#AF8241"},
+    {"type":"checkbox","id":"animate_background","label":"Animate gradient background","default":false},
+    {"type":"range","id":"gradient_duration","min":4,"max":30,"step":1,"unit":"s","label":"Gradient animation speed","default":12},
+
+    {"type":"header","content":"Animation"},
+    {"type":"select","id":"animation","label":"Animation type","default":"none","options":[
+      {"value":"none","label":"Static"},
+      {"value":"marquee","label":"Continuous marquee"},
+      {"value":"fade","label":"Fade rotation"},
+      {"value":"slide-up","label":"Slide upward rotation"},
+      {"value":"slide-left","label":"Slide left rotation"}
+    ]},
+    {"type":"select","id":"direction","label":"Marquee direction","default":"left","options":[
+      {"value":"left","label":"Left"},
+      {"value":"right","label":"Right"}
+    ]},
+    {"type":"range","id":"marquee_duration","min":8,"max":60,"step":1,"unit":"s","label":"Desktop marquee speed","default":20},
+    {"type":"range","id":"mobile_marquee_duration","min":8,"max":60,"step":1,"unit":"s","label":"Mobile marquee speed","default":16},
+    {"type":"range","id":"rotation_interval","min":2,"max":12,"step":1,"unit":"s","label":"Time between messages","default":5},
+    {"type":"range","id":"transition_speed","min":200,"max":1200,"step":100,"unit":"ms","label":"Transition speed","default":500},
+    {"type":"checkbox","id":"pause_on_hover","label":"Pause on hover","default":true},
+    {"type":"checkbox","id":"enable_mobile_animation","label":"Animate on mobile","default":true},
+    {"type":"checkbox","id":"shimmer_text","label":"Add text shimmer","default":false},
+
+    {"type":"header","content":"Typography and spacing"},
+    {"type":"range","id":"height","min":28,"max":64,"step":2,"unit":"px","label":"Bar height","default":38},
+    {"type":"range","id":"font_size","min":10,"max":20,"step":1,"unit":"px","label":"Font size","default":12},
+    {"type":"select","id":"font_weight","label":"Font weight","default":"600","options":[
+      {"value":"400","label":"Regular"},
+      {"value":"500","label":"Medium"},
+      {"value":"600","label":"Semibold"},
+      {"value":"700","label":"Bold"}
+    ]},
+    {"type":"range","id":"letter_spacing","min":0,"max":30,"step":1,"unit":"%","label":"Letter spacing","default":8},
+    {"type":"checkbox","id":"uppercase","label":"Uppercase text","default":false},
+    {"type":"select","id":"content_width","label":"Content width","default":"page","options":[
+      {"value":"page","label":"Page width"},
+      {"value":"full","label":"Full width"}
+    ]},
+    {"type":"range","id":"message_gap","min":16,"max":100,"step":2,"unit":"px","label":"Desktop message spacing","default":48},
+    {"type":"range","id":"mobile_message_gap","min":12,"max":60,"step":2,"unit":"px","label":"Mobile message spacing","default":28},
+    {"type":"checkbox","id":"show_separator","label":"Show separators","default":true},
+    {"type":"text","id":"separator","label":"Separator character","default":"✦"}
+  ],
+  "blocks": [
+    {
+      "type": "message",
+      "name": "Additional message",
+      "settings": [
+        {"type":"text","id":"text","label":"Text","default":"Inspired by Puerto Rico"},
+        {"type":"url","id":"link","label":"Link"}
+      ]
+    }
+  ],
+  "presets": [{"name":"Announcement bar"}],
+  "enabled_on": {"groups":["header"]}
+}
+{% endschema %}

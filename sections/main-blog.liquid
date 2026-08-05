@@ -1,0 +1,23 @@
+<section class="section cx-color-scheme color-{{ section.settings.color_scheme }}"><div class="page-width"><header class="page-header"><p class="eyebrow">{{ 'blogs.general.journal' | t }}</p><h1>{{ blog.title }}</h1></header>{%- paginate blog.articles by section.settings.articles_per_page -%}<div class="article-grid">{%- for article in blog.articles -%}<article class="article-card">{%- if article.image -%}<a href="{{ article.url }}">{% render 'responsive-image', image: article.image, widths: '400, 600, 900', sizes: '(min-width: 900px) 33vw, 100vw', class: 'article-card__image', loading: 'lazy', alt: article.title %}</a>{%- endif -%}<p class="eyebrow">{{ article.published_at | date: '%b %d, %Y' }}</p><h2><a href="{{ article.url }}">{{ article.title }}</a></h2><p>{{ article.excerpt_or_content | strip_html | truncate: 180 }}</p></article>{%- endfor -%}</div>{% render 'pagination', paginate: paginate %}{%- endpaginate -%}</div></section>
+{% schema %}
+{
+  "name": "Main blog",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color palette",
+      "default": "scheme-1"
+    },
+    {
+      "type": "range",
+      "id": "articles_per_page",
+      "min": 3,
+      "max": 24,
+      "step": 3,
+      "label": "Articles per page",
+      "default": 9
+    }
+  ]
+}
+{% endschema %}

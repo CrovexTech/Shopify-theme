@@ -1,0 +1,155 @@
+<sticky-header class="site-header cx-color-scheme color-{{ section.settings.color_scheme }}{% if section.settings.sticky %} site-header--sticky{% endif %}">
+  <div class="page-width site-header__inner">
+    <button class="icon-button site-header__menu-button" type="button" data-menu-toggle aria-expanded="false" aria-controls="MobileMenu" aria-label="{{ 'accessibility.open_menu' | t }}">
+      {% render 'icon', name: 'menu' %}
+    </button>
+
+    <a class="site-logo" href="{{ routes.root_url }}" aria-label="{{ shop.name | escape }}">
+      {%- if section.settings.logo != blank -%}
+        {{ section.settings.logo | image_url: width: section.settings.logo_width | image_tag: widths: '120, 180, 240, 360, 480', width: section.settings.logo_width, alt: shop.name, loading: 'eager' }}
+      {%- else -%}
+        <span>{{ shop.name }}</span>
+      {%- endif -%}
+    </a>
+
+    <nav class="desktop-nav" aria-label="{{ 'accessibility.primary_navigation' | t }}">
+      <ul class="desktop-nav__list" role="list">
+        {%- for link in section.settings.menu.links -%}
+          <li class="desktop-nav__item">
+            {%- if link.links != blank -%}
+              <details class="nav-dropdown">
+                <summary>{{ link.title }} {% render 'icon', name: 'chevron' %}</summary>
+                <div class="nav-dropdown__panel">
+                  <ul role="list">
+                    {%- for child_link in link.links -%}
+                      <li>
+                        <a href="{{ child_link.url }}">{{ child_link.title }}</a>
+                        {%- if child_link.links != blank -%}
+                          <ul role="list">
+                            {%- for grandchild_link in child_link.links -%}
+                              <li><a href="{{ grandchild_link.url }}">{{ grandchild_link.title }}</a></li>
+                            {%- endfor -%}
+                          </ul>
+                        {%- endif -%}
+                      </li>
+                    {%- endfor -%}
+                  </ul>
+                </div>
+              </details>
+            {%- else -%}
+              <a href="{{ link.url }}"{% if link.current %} aria-current="page"{% endif %}>{{ link.title }}</a>
+            {%- endif -%}
+          </li>
+        {%- endfor -%}
+      </ul>
+    </nav>
+
+    <div class="site-header__actions">
+      <button class="icon-button" type="button" data-search-toggle aria-label="{{ 'general.search.open' | t }}">
+        {% render 'icon', name: 'search' %}
+      </button>
+      {%- if shop.customer_accounts_enabled -%}
+        <a class="icon-button" href="{{ routes.account_url }}" aria-label="{{ 'customer.account.title' | t }}">
+          {% render 'icon', name: 'user' %}
+        </a>
+      {%- endif -%}
+      <button class="icon-button cart-button" type="button" data-cart-open aria-label="{{ 'cart.general.open' | t }}">
+        {% render 'icon', name: 'bag' %}
+        <span class="cart-count" data-cart-count{% if cart.item_count == 0 %} hidden{% endif %}>{{ cart.item_count }}</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="search-panel" data-search-panel hidden>
+    <predictive-search class="page-width predictive-search">
+      <form class="search-panel__form" action="{{ routes.search_url }}" method="get" role="search">
+        <label class="visually-hidden" for="HeaderSearch">{{ 'general.search.label' | t }}</label>
+        <input id="HeaderSearch" type="search" name="q" value="{{ search.terms | escape }}" placeholder="{{ 'general.search.placeholder' | t }}" autocomplete="off" data-predictive-input aria-autocomplete="list" aria-controls="PredictiveSearchResults">
+        <input type="hidden" name="options[prefix]" value="last">
+        <button class="button button--primary" type="submit">{{ 'general.search.submit' | t }}</button>
+      </form>
+      <div id="PredictiveSearchResults" class="predictive-search__results" data-predictive-results role="listbox" hidden></div>
+    </predictive-search>
+  </div>
+
+  <div id="MobileMenu" class="mobile-menu" data-mobile-menu hidden>
+    <div class="mobile-menu__backdrop" data-menu-close></div>
+    <aside class="mobile-menu__panel" aria-label="{{ 'accessibility.mobile_navigation' | t }}">
+      <div class="mobile-menu__header">
+        <strong>{{ shop.name }}</strong>
+        <button class="icon-button" type="button" data-menu-close aria-label="{{ 'accessibility.close' | t }}">{% render 'icon', name: 'close' %}</button>
+      </div>
+      <nav>
+        <ul class="mobile-menu__list" role="list">
+          {%- for link in section.settings.menu.links -%}
+            <li>
+              {%- if link.links != blank -%}
+                <details>
+                  <summary>{{ link.title }} {% render 'icon', name: 'chevron' %}</summary>
+                  <ul role="list">
+                    {%- for child_link in link.links -%}
+                      <li><a href="{{ child_link.url }}">{{ child_link.title }}</a></li>
+                    {%- endfor -%}
+                  </ul>
+                </details>
+              {%- else -%}
+                <a href="{{ link.url }}">{{ link.title }}</a>
+              {%- endif -%}
+            </li>
+          {%- endfor -%}
+        </ul>
+      </nav>
+    </aside>
+  </div>
+</sticky-header>
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color palette",
+      "default": "scheme-1"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo"
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "min": 80,
+      "max": 320,
+      "step": 10,
+      "unit": "px",
+      "label": "Logo width",
+      "default": 160
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu",
+      "default": "main-menu"
+    },
+    {
+      "type": "checkbox",
+      "id": "sticky",
+      "label": "Sticky header",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Header"
+    }
+  ],
+  "enabled_on": {
+    "groups": [
+      "header"
+    ]
+  }
+}
+{% endschema %}
