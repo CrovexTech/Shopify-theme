@@ -1,0 +1,214 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Crovex Commerce Framework",
+    "theme_author": "James Boyden",
+    "theme_version": "0.0.5"
+  },
+  {
+    "name": "Brand",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon"
+      },
+      {
+        "type": "image_picker",
+        "id": "social_image",
+        "label": "Social sharing image"
+      }
+    ]
+  },
+  {
+    "name": "Color schemes",
+    "settings": [
+      {
+        "type": "color_scheme_group",
+        "id": "color_schemes",
+        "definition": [
+          {
+            "type": "color",
+            "id": "background",
+            "label": "Background",
+            "default": "#FFFFFF"
+          },
+          {
+            "type": "color_background",
+            "id": "background_gradient",
+            "label": "Background gradient",
+            "info": "Optional. When set, this replaces the solid background."
+          },
+          {
+            "type": "color",
+            "id": "text",
+            "label": "Text",
+            "default": "#121212"
+          },
+          {
+            "type": "color",
+            "id": "button",
+            "label": "Primary button / accent",
+            "default": "#121212"
+          },
+          {
+            "type": "color",
+            "id": "button_label",
+            "label": "Text on primary button",
+            "default": "#FFFFFF"
+          },
+          {
+            "type": "color",
+            "id": "secondary_button_label",
+            "label": "Secondary button and links",
+            "default": "#121212"
+          },
+          {
+            "type": "color",
+            "id": "shadow",
+            "label": "Shadow",
+            "default": "#121212"
+          }
+        ],
+        "role": {
+          "text": "text",
+          "background": {
+            "solid": "background",
+            "gradient": "background_gradient"
+          },
+          "links": "secondary_button_label",
+          "icons": "text",
+          "primary_button": "button",
+          "on_primary_button": "button_label",
+          "primary_button_border": "button",
+          "secondary_button": "background",
+          "on_secondary_button": "secondary_button_label",
+          "secondary_button_border": "secondary_button_label"
+        }
+      }
+    ]
+  },
+  {
+    "name": "Global colors",
+    "settings": [
+      {
+        "type": "color_scheme",
+        "id": "default_color_scheme",
+        "label": "Default site color scheme",
+        "default": "scheme-1"
+      },
+      {
+        "type": "header",
+        "content": "Preset guide"
+      },
+      {
+        "type": "paragraph",
+        "content": "Scheme 1 \u2014 Tropical Heritage \u00b7 Scheme 2 \u2014 Luxury Noir \u00b7 Scheme 3 \u2014 Warm Editorial \u00b7 Scheme 4 \u2014 Beauty Blush \u00b7 Scheme 5 \u2014 Modern Minimal."
+      },
+      {
+        "type": "paragraph",
+        "content": "Scheme 6 \u2014 Ocean Coastal \u00b7 Scheme 7 \u2014 Earth & Botanical \u00b7 Scheme 8 \u2014 Digital Neon \u00b7 Scheme 9 \u2014 Bold Streetwear \u00b7 Scheme 10 \u2014 Soft Pastel."
+      }
+    ]
+  },
+  {
+    "name": "Typography",
+    "settings": [
+      {
+        "type": "font_picker",
+        "id": "font_body",
+        "label": "Body font",
+        "default": "assistant_n4"
+      },
+      {
+        "type": "font_picker",
+        "id": "font_heading",
+        "label": "Heading font",
+        "default": "assistant_n7"
+      }
+    ]
+  },
+  {
+    "name": "Layout",
+    "settings": [
+      {
+        "type": "range",
+        "id": "page_width",
+        "min": 1000,
+        "max": 1800,
+        "step": 40,
+        "unit": "px",
+        "label": "Page width",
+        "default": 1360
+      },
+      {
+        "type": "range",
+        "id": "section_spacing",
+        "min": 32,
+        "max": 120,
+        "step": 4,
+        "unit": "px",
+        "label": "Section spacing",
+        "default": 72
+      },
+      {
+        "type": "range",
+        "id": "radius_small",
+        "min": 0,
+        "max": 20,
+        "step": 1,
+        "unit": "px",
+        "label": "Small radius",
+        "default": 6
+      },
+      {
+        "type": "range",
+        "id": "radius_large",
+        "min": 0,
+        "max": 40,
+        "step": 2,
+        "unit": "px",
+        "label": "Large radius",
+        "default": 18
+      }
+    ]
+  },
+  {
+    "name": "Commerce",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "enable_quick_add",
+        "label": "Enable quick add",
+        "default": true
+      },
+      {
+        "type": "select",
+        "id": "cart_behavior",
+        "label": "After add to cart",
+        "default": "drawer",
+        "options": [
+          {
+            "value": "drawer",
+            "label": "Open cart drawer"
+          },
+          {
+            "value": "page",
+            "label": "Go to cart page"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Motion",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "enable_reveal",
+        "label": "Reveal sections on scroll",
+        "default": true
+      }
+    ]
+  }
+]
