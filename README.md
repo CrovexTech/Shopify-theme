@@ -1,2 +1,0 @@
-# Shopify-theme
-Silence 
